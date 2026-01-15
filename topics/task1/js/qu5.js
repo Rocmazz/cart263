@@ -60,12 +60,12 @@ function draw() {
   background("#000000");
 
   //draws the Ellipse
-  drawRect();
+  drawEllipses();
 
 
 }
 
-function drawRect() {
+function drawEllipses() {
   // Rect 1 draw
   push();
   noStroke();
