@@ -1,104 +1,128 @@
-/**
- * Task 1
- * Noureddine Mazzene
- *
- *
- */
-
 "use strict";
 
-// rect 1
-
 let rect1 = {
-    x:80,
-    y:80,
-    w:50,
-    h:50,
-    color:{
-        r: 200,
-        g:15,
-        b:180,
-    }
-    }
-
-let rect2 = {
-      x: 160,
-      y: 160,
-      w: 50,
-      h: 50,
-      color: {
-        r: 200,
-        g: 15,
-        b: 180,
-      },
-    };
-
-let rect3 = {
-  x: 50,
-  y: 160,
-  w: 50,
-  h: 50,
+  x: 0,
+  y: 0,
+  w: 0,
+  h: 0,
   color: {
-    r: 200,
-    g: 15,
-    b: 180,
+    r: 60,
+    g: 130,
+    b: 255,
+  },
+  original: {
+    r: 60,
+    g: 130,
+    b: 255,
   },
 };
 
-/**
- * Creates the canvas
- */
+let rect2 = {
+  x: 0,
+  y: 0,
+  w: 0,
+  h: 0,
+  color: {
+    r: 40,
+    g: 100,
+    b: 255,
+  },
+  original: {
+    r: 40,
+    g: 100,
+    b: 255,
+  },
+};
+
+let rect3 = {
+  x: 0,
+  y: 0,
+  w: 0,
+  h: 0,
+  color: {
+    r: 10,
+    g: 60,
+    b: 255,
+  },
+  original: {
+    r: 10,
+    g: 60,
+    b: 255,
+  },
+};
+
 function setup() {
   createCanvas(400, 400);
+
+  // sizes based on canvas
+  const canvasW = width / 3;
+  const canvasH = height;
+
+  // position
+  rect1.w = canvasW;
+  rect1.h = canvasH;
+
+  rect2.x = canvasW;
+  rect2.w = canvasW;
+  rect2.h = canvasH;
+
+  rect3.x = canvasW * 2;
+  rect3.w = canvasW;
+  rect3.h = canvasH;
 }
 
-/**
- * Sets the background, draws the landscape
- */
 function draw() {
-  //Background
-  background("#000000");
+  background(255);
 
-  //draws the Ellipse
-  drawEllipses();
+  // update colors based on hover
+  turnWhite();
 
-
+  // draw rectangles
+  drawRect();
 }
 
-function drawEllipses() {
-  // Rect 1 draw
-  push();
+function drawRect() {
   noStroke();
+
   fill(rect1.color.r, rect1.color.g, rect1.color.b);
   rect(rect1.x, rect1.y, rect1.w, rect1.h);
-  pop();
 
-  // Rect 2 draw
-  push();
-  noStroke();
   fill(rect2.color.r, rect2.color.g, rect2.color.b);
   rect(rect2.x, rect2.y, rect2.w, rect2.h);
-  pop();
 
-  // Rect 3 draw
-  push();
-  noStroke();
   fill(rect3.color.r, rect3.color.g, rect3.color.b);
-  rect(rect3.x, rect3.y+=1, rect3.w, rect3.h);
-  pop();
-
-  if (rect3.y > 400) {
-    rect3.y = 0;
-  };
+  rect(rect3.x, rect3.y, rect3.w, rect3.h);
 }
 
-function mousePressed(){
-    rect1.x += 1;
-    rect1.y += 1;
-}
+function turnWhite() {
+  // if hovered white, else back to original
+  if (mouseX >= rect1.x && mouseX <= rect1.x + rect1.w) {
+    rect1.color.r = 255;
+    rect1.color.g = 255;
+    rect1.color.b = 255;
+  } else {
+    rect1.color.r = rect1.original.r;
+    rect1.color.g = rect1.original.g;
+    rect1.color.b = rect1.original.b;
+  }
 
-function keyPressed(SPACE) {
-    rect2.x += 1;
-    rect2.y += 1;
+  if (mouseX >= rect2.x && mouseX <= rect2.x + rect2.w) {
+    rect2.color.r = 255;
+    rect2.color.g = 255;
+    rect2.color.b = 255;
+  } else {
+    rect2.color.r = rect2.original.r;
+    rect2.color.g = rect2.original.g;
+    rect2.color.b = rect2.original.b;
+  }
 
+  if (mouseX >= rect3.x && mouseX <= rect3.x + rect3.w) {
+    rect3.color.r = 255;
+    rect3.color.g = 255;
+    rect3.color.b = 255;
+  } else {
+    rect3.color.r = rect3.original.r;
+    rect3.color.g = rect3.original.g;
+    rect3.color.b = rect3.original.b;
+  }
 }
