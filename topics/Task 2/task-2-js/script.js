@@ -2,13 +2,13 @@ window.onload = setup;
 
 /** function setup */
 function setup(){
-  console.log("we are a go!");
+  //console.log("we are a go!");
   /*** ALL ANWSERS TO BE ADDED IN THE ALLOCATED SPACE */
   /*** START PART ONE ACCESS */
   /* 1: all paragraph elements */
   /***CODE */
-  const allParagraphs = document.querySelectorAll("p");
-  console.log(allParagraphs);
+  //const allParagraphs = document.querySelectorAll("p");
+  //console.log(allParagraphs);
   /***OUTPUT: 
  * NodeList(9) [p#1, p#2.img-descript, p#3.img-descript, p#4.img-descript, p#5.img-descript, p#6.img-descript, p#7.img-descript, p#8.img-descript, p#9.img-descript]
 
@@ -17,8 +17,8 @@ function setup(){
   /*************************************** */
   /* 2: only the first paragraph element */
   /***CODE */
-  const firstParagraph = document.querySelector("p");
-  console.log(firstParagraph);
+  //const firstParagraph = document.querySelector("p");
+  //console.log(firstParagraph);
   /***OUTPUT:
    *<p id="1">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias perspiciatis blanditiis, et
@@ -31,8 +31,8 @@ function setup(){
   /*************************************** */
   /* 3: all elements with the class inner-container */
   /***CODE */
-  const innerContainers = document.querySelectorAll(".inner-container");
-  console.log(innerContainers);
+  //const innerContainers = document.querySelectorAll(".inner-container");
+  //console.log(innerContainers);
   /***OUTPUT:
    *NodeList(8) [div.inner-container, div.inner-container, div.inner-container, div.inner-container, div.inner-container, div.inner-container, div.inner-container, div.inner-container]
    */
@@ -40,11 +40,11 @@ function setup(){
   /*************************************** */
   /* 4: the last image element inside the element that has the class img-container */
   /***CODE */
-  let imgContainers = document.getElementsByClassName("img-container"); // list of containers
-  let firstImgContainer = imgContainers[0]; // take the first one
-  let imgsInside = firstImgContainer.getElementsByTagName("img"); // list of imgs inside it
-  let lastImg = imgsInside[imgsInside.length - 1]; // last image
-  console.log(lastImg);
+  //let imgContainers = document.getElementsByClassName("img-container"); // list of containers
+  //let firstImgContainer = imgContainers[0]; // take the first one
+  //let imgsInside = firstImgContainer.getElementsByTagName("img"); // list of imgs inside it
+  //let lastImg = imgsInside[imgsInside.length - 1]; // last image
+  //console.log(lastImg);
   /***OUTPUT:
    *<img class="img-image" src="task-2-images/sixteen.png">
    */
@@ -54,15 +54,133 @@ function setup(){
   /* 5B: length of the list in 5A */
   /* 5C: the text content of the first element in the list from 5A */
   /***CODE */
+ // let allH2Elements = document.getElementsByTagName("h2");
+  //console.log(allH2Elements);
+  //console.log(allH2Elements.length);
+  //console.log(allH2Elements[0].textContent);
   /***OUTPUT:
-   *
+   * HTMLCollection [h2]0: h2length: 1[[Prototype]]: HTMLCollection
+script.js:59 1
+script.js:60  The header of this fancy page
    */
 
   /*************************************** */
   /* 6: the element with id name parent */
   /***CODE */
+  //let parentElement = document.getElementById("parent");
+ // console.log(parentElement);
   /***OUTPUT:
-   *
+   *<section id="parent">
+            <div class="inner-container">
+                <div class="content-container">
+                    <div class="img-container">
+                        <img class="img-image" src="task-2-images/sixteen.png">
+                    </div>
+                    <p id="2" class="img-descript">Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
+                        perspiciatis blanditiis, et
+                        laborum praesentium earum. Enim facere, quia commodi voluptate, quis asperiores, pariatur
+                        ducimus officiis non
+                        quasi officia sit veniam!</p>
+
+                </div>
+            </div>
+            <div class="inner-container">
+                <div class="content-container">
+                    <div class="img-container">
+                        <img class="img-image" src="task-2-images/eight.png">
+                    </div>
+                    <p id="3" class="img-descript">Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
+                        perspiciatis blanditiis, et
+                        laborum praesentium earum. Enim facere, quia commodi voluptate, quis asperiores, pariatur
+                        ducimus officiis non
+                        quasi officia sit veniam!</p>
+
+                </div>
+            </div>
+            <div class="inner-container">
+
+                <div class="content-container">
+                    <div class="img-container">
+                        <img class="img-image" src="task-2-images/eleven.png">
+                    </div>
+                    <p id="4" class="img-descript">Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
+                        perspiciatis blanditiis, et
+                        laborum praesentium earum. Enim facere, quia commodi voluptate, quis asperiores, pariatur
+                        ducimus officiis non
+                        quasi officia sit veniam!</p>
+
+                </div>
+            </div>
+            <div class="inner-container">
+                <div class="content-container">
+                    <div class="img-container">
+                        <img class="img-image" src="task-2-images/fifteen.png">
+                    </div>
+                    <p id="5" class="img-descript">Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
+                        perspiciatis blanditiis, et
+                        laborum praesentium earum. Enim facere, quia commodi voluptate, quis asperiores, pariatur
+                        ducimus officiis non
+                        quasi officia sit veniam!</p>
+
+                </div>
+            </div>
+            <div class="inner-container">
+                <div class="content-container">
+                    <div class="img-container">
+                        <img class="img-image" src="task-2-images/five.png">
+                    </div>
+                    <p id="6" class="img-descript">Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
+                        perspiciatis blanditiis, et
+                        laborum praesentium earum. Enim facere, quia commodi voluptate, quis asperiores, pariatur
+                        ducimus officiis non
+                        quasi officia sit veniam!</p>
+
+                </div>
+            </div>
+            
+            <div class="inner-container">
+                <div class="content-container">
+                    <div class="img-container">
+                        <img class="img-image" src="task-2-images/three.png">
+                    </div>
+                    <p id="7" class="img-descript">Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
+                        perspiciatis blanditiis, et
+                        laborum praesentium earum. Enim facere, quia commodi voluptate, quis asperiores, pariatur
+                        ducimus officiis non
+                        quasi officia sit veniam!</p>
+
+                </div>
+            </div>
+            
+            <div class="inner-container">
+                <div class="content-container">
+                    <div class="img-container">
+                        <img class="img-image" src="task-2-images/twelve.png">
+                    </div>
+                    <p id="8" class="img-descript">Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
+                        perspiciatis blanditiis, et
+                        laborum praesentium earum. Enim facere, quia commodi voluptate, quis asperiores, pariatur
+                        ducimus officiis non
+                        quasi officia sit veniam!</p>
+
+                </div>
+            </div>
+            
+            <div class="inner-container">
+                <div class="content-container">
+                    <div class="img-container">
+                        <img class="img-image" src="task-2-images/seventeen.png">
+                    </div>
+                    <p id="9" class="img-descript">Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
+                        perspiciatis blanditiis, et
+                        laborum praesentium earum. Enim facere, quia commodi voluptate, quis asperiores, pariatur
+                        ducimus officiis non
+                        quasi officia sit veniam!</p>
+
+                </div>
+            </div>
+            
+        </section>
    */
 
   /*************************************** */
@@ -73,30 +191,50 @@ function setup(){
   /*************************************** */
   /* 1: Select the first paragraph and replace the text within the paragraph... */
   /***CODE */
+  let firstParagraph = document.getElementsByTagName("p")[0];
+  firstParagraph.textContent =
+    "Noureddine Mazzene Feb 1 2026.";
   /*************************************** */
   /* 2: Select all elements in the HTML that have the class name content-container
  and change the background color ... of first and second ...*/
   /***CODE */
+  let contentContainers = document.getElementsByClassName("content-container");
+
+  contentContainers[0].style.backgroundColor = "orange";
+  contentContainers[1].style.backgroundColor = "purple";
 
   /*************************************** */
   /* 3: Change the src element of the first image element on the page to be ...
 /***CODE */
+let firstImage = document.getElementsByTagName("img")[0];
+firstImage.setAttribute("src", "task-2-images/seven.png");
 
   /*************************************** */
   /* 4: Select the third paragraph element on the page and 
 replace the content (within the paragraph) to be an h2 element which contains the text `TEST 123`
 /***CODE */
+let allParagraphs = document.getElementsByTagName("p");
+allParagraphs[2].innerHTML = "<h2>TEST 123</h2>";
 
   /*************************************** */
   /* 5: Select the fourth paragraph element on the page and 
 add to the existing content an h2 element containing the text `TEST 123`
 /***CODE */
-
+let paragraphs = document.getElementsByTagName("p");
+let newHeading = document.createElement("h2");
+newHeading.textContent = "TEST 123";
+paragraphs[3].appendChild(newHeading);
   /*************************************** */
   /* 6: Select the fifth paragraph element on the page and add to the existing content 
 an img element that holds `one.png`, and add the class newStyle to said paragraph element.
 /***CODE */
+let fifthParagraph = document.getElementsByTagName("p")[4];
 
+let newImage = document.createElement("img");
+newImage.setAttribute("src", "task-2-images/one.png");
+
+fifthParagraph.appendChild(newImage);
+fifthParagraph.classList.add("newStyle");
   /*************************************** */
   /* 7: Add the following array variable: let colors = ['red','blue','green','orange'];, 
 then access all elements with class name inner-container and save to a variable called `innerContainers`. 
@@ -105,6 +243,12 @@ assign the element from innerContainers variable with the same index
 (i.e. colors[0] should be allocated to the first innerContainers element, colors[1] to the second, etc ...) 
 a background using that color.
 /***CODE */
+
+let colors = ["red", "blue", "green", "orange"];
+let innerContainers = document.getElementsByClassName("inner-container");
+
+for (let i = 0; i < colors.length; i++) {
+  innerContainers[i].style.backgroundColor = colors[i];}
 
   /*************************************** */
   /*** END PART TWO MODIFY */
