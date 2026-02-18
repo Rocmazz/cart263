@@ -31,15 +31,15 @@ function aniA(parentCanvas) {
     const emoji = document.createElement("div");
 
     // emoji 
-    const emojis = "🎉" ;
-    // makes text content the emoji chosen
-    emoji.textContent = emojis;
+    const emojis = ["🎉", "✨", "😄", "💛", "⭐️", "🎈"]; ;
+    // randomizes the text content to the random emoji
+    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
 // puts emoji inside mycanvas
     emoji.style.position = "absolute";
-    //emoji size
-    emoji.style.fontSize = "10px";
+    //emoji size (made it bigger)
+    emoji.style.fontSize = "40px";
 
-    // puts emoji where mouse was clicked
+    // puts emoji where mouse was clicked (theres a bug where if you click on the emoji it will place on the top left corner)
     emoji.style.left = e.offsetX + "px";
     emoji.style.top = e.offsetY + "px";
     // draws emoji
