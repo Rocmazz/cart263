@@ -22,9 +22,35 @@ function setup_F() {
    * Do not change any code above or the HTML markup.
    * **/
    
-  function aniA(parentCanvas) {
-    console.log("in ani-A -teamF");
-  }
+function aniA(parentCanvas) {
+  console.log("team F aniA running");
+
+  // waits mouse clicks on the canvas
+  parentCanvas.addEventListener("click", function (e) {
+    // createss  new div
+    const emoji = document.createElement("div");
+
+    // emoji 
+    const emojis = "🎉" ;
+    // makes text content the emoji chosen
+    emoji.textContent = emojis;
+// puts emoji inside mycanvas
+    emoji.style.position = "absolute";
+    //emoji size
+    emoji.style.fontSize = "10px";
+
+    // puts emoji where mouse was clicked
+    emoji.style.left = e.offsetX + "px";
+    emoji.style.top = e.offsetY + "px";
+    // draws emoji
+    parentCanvas.appendChild(emoji);
+  });
+}
+
+
+
+
+
 
 
   /****************ANI B ************************************ */
