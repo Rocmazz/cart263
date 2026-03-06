@@ -61,3 +61,34 @@ h1 {
     outline: 3px solid #7CFFB2;
     outline-offset: 4px;
 }
+
+/* back button appearance */
+#backBtn {
+        padding: 14px 26px;
+        font-size: 18px;
+        font-weight: bold;
+
+        border: 2px solid white;
+        background-color: transparent;
+        color: white;
+
+        cursor: pointer;
+    }
+
+#backBtn:hover {
+    background-color: white;
+    color: #111;
+}
+
+/* keyboard focus */
+#backBtn:focus {
+    outline: 3px solid #7CFFB2;
+    outline-offset: 4px;
+}
+
+/* gif appearcance */
+#loadingGif {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}

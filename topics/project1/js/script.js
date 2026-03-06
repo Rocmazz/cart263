@@ -4,16 +4,35 @@ let statusText = document.getElementById("status");
 
 // keep track of how many times the user tried
 let attempts = 0;
+let messages = [];
+
+// load the JSON file
+fetch("assets/data.json")
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    messages = data.messages;
+  });
 
 // when the mouse goes over the button
 startButton.addEventListener("mouseenter", moveButton);
+
+// if the button gets clicked, go to loading page
+startButton.addEventListener("click", goToLoadingPage);
+
 
 function moveButton() {
   // increase attempt counter
   attempts++;
 
-  // update the message
-  statusText.textContent = "Nice try. Attempts: " + attempts;
+  // change the text if JSON has loaded
+  if (messages.length > 0) {
+    let randomIndex = Math.floor(Math.random() * messages.length);
+    statusText.textContent = messages[randomIndex] + " Attempts: " + attempts;
+  } else {
+    statusText.textContent = "Nice try. Attempts: " + attempts;
+  }
 
   // window size
   let windowWidth = window.innerWidth;
@@ -29,4 +48,8 @@ function moveButton() {
   // move button
   startButton.style.left = randomX + "px";
   startButton.style.top = randomY + "px";
+}
+
+function goToLoadingPage() {
+  window.location.href = "loading.html";
 }

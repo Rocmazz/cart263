@@ -1,0 +1,21 @@
+{
+  "description": "Messages for the loading screen.",
+  "messages": [
+    "Trying to leave already?",
+    "You have to wait.",
+    "This loading screen is very busy.",
+    "Almost... not really.",
+    "Try again.",
+    "Nope.",
+    ":(",
+    ":)",
+    "Still loading.",
+    "Please be patient.",
+    "This might take a while.",
+    "You are not going anywhere.",
+    "Almost done... maybe.",
+    "Just a little longer.",
+    "Why are you rushing?",
+    "Loading is an art."
+  ]
+}
