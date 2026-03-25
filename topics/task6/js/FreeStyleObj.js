@@ -9,9 +9,19 @@ class FreeStyleObj {
       this.theta = 0;
       this.length = length;
       this.yOffset = 20;
-      this.angularSpeed = .07;
-      this.context =context;
+      this.angularSpeed = 0.07;
+      this.context = context;
 
+      // keep original values so mic input can change them
+      this.baseYOffset = 20;
+      this.baseAngularSpeed = 0.07;
+
+      // this will be updated from the microphone code
+      this.micLevel = 0;
+
+      // simple extra animation
+      this.baseY = y;
+      this.yDirection = 1;
     }
   
     display() {
@@ -29,9 +39,19 @@ class FreeStyleObj {
     }
 
     update(){
-        //update freestyle
-       // console.log("free style update")
-       // this.x+=1;
+      //update freestyle
+      // console.log("free style update")
+
+      // small up and down movement
+      this.y += this.yDirection;
+
+      if (this.y > this.baseY + 10 || this.y < this.baseY - 10) {
+        this.yDirection *= -1;
+      }
+
+      // microphone affects at least two properties
+      this.yOffset = this.baseYOffset + this.micLevel;
+      this.angularSpeed = this.baseAngularSpeed + this.micLevel * 0.01;
     }
   }
   

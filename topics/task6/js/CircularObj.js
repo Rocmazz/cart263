@@ -1,15 +1,26 @@
 class CircularObj {
   constructor(x, y, radius, f_color, s_color, context) {
-    // We write instructions to set up a Flower here
-    // Position and size information
     this.x = x;
     this.y = y;
+
     this.radius = radius;
     this.fill_color = f_color;
     this.stroke_color = s_color;
     this.startAngle = 0;
-    this.endAngle = Math.PI * 2; //full rotation
+    this.endAngle = Math.PI * 2;
     this.context = context;
+
+    // keeping track of the original values
+    // so the circle can animate around them
+    this.baseY = y;
+    this.baseRadius = radius;
+
+    // these will get updated from DrawingBoard.js
+    this.mouseX = x;
+    this.mouseY = y;
+
+    // simple animation values
+    this.yDirection = 1;
   }
 
   display() {
@@ -32,7 +43,6 @@ class CircularObj {
 
   update() {
     //update circle
-    //this.x += 1;
-    //console.log("circle update");
+    this.x += 1;
   }
 }

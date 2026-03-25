@@ -11,6 +11,17 @@ class RectangularObj {
     this.startAngle = 0;
     this.endAngle = Math.PI * 2; //full rotation
     this.context = context;
+
+    // keep original size so microphone changes can animate around it
+    this.baseWidth = w;
+    this.baseHeight = h;
+
+    // this will get updated from the microphone code in start.js
+    this.micLevel = 0;
+
+    // simple movement values
+    this.baseX = x;
+    this.xDirection = 1;
   }
 
   display() {
@@ -23,7 +34,19 @@ class RectangularObj {
 
   update(){
     //update freestyle
-   // this.x+=1;
+
+    // simple side to side movement
+    this.x += this.xDirection;
+
+    // make it move back and forth near its original position
+    if (this.x > this.baseX + 20 || this.x < this.baseX - 20) {
+      this.xDirection *= -1;
+    }
+
+    // microphone affects at least two properties: width and height
+    this.width = this.baseWidth + this.micLevel * 2;
+    this.height = this.baseHeight + this.micLevel;
+
     //console.log("rectangle update")
-}
+  }
 }
