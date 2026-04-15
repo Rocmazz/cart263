@@ -27,10 +27,10 @@ class TitleScene extends Phaser.Scene {
       color: '#ffffff'
     }).setOrigin(0.5);
 
-    //  enter key to start game
+    // enter key to start game
     const enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     enter.once('down', () => {
-      console.log('Starting game...');
+      this.scene.start('PlayScene');
     });
   }
 }

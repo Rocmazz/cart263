@@ -14,8 +14,9 @@
   <!-- load phaser from cdn -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.60.0/phaser.min.js"></script>
 
-  <!-- load the title scene -->
+  <!-- load scenes -->
   <script src="js/TitleScene.js"></script>
+  <script src="js/PlayScene.js"></script>
 
   <script>
     // phaser game config
@@ -24,7 +25,11 @@
       width: 800,
       height: 400,
       backgroundColor: '#5ac8f5',
-      scene: [TitleScene]
+      physics: {
+        default: 'arcade',
+        arcade: { gravity: { y: 0 }, debug: false }
+      },
+      scene: [TitleScene, PlayScene]
     };
 
     // start the game
