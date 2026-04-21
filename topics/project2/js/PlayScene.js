@@ -11,25 +11,28 @@ class PlayScene extends Phaser.Scene {
     this.isSpinning = false;
     this.spinCooldown = false;
 
-    // plain arrays for obstacles, enemies, and ground
+    // plain arrays for obstacles, enemies, and ground visuals
     this.obstacles = [];
     this.enemies = [];
-    this.groundSegments = [];
+    this.groundVisuals = [];
 
     // sky background
     this.add.rectangle(400, 200, 800, 400, 0x5ac8f5);
 
-    // static physics group for ground
-    this.groundGroup = this.physics.add.staticGroup();
-    this.buildGround();
+    // one fixed invisible ground line the player always lands on
+    this.groundLine = this.add.rectangle(400, 352, 800, 4, 0x000000).setVisible(false);
+    this.physics.add.existing(this.groundLine, true);
 
     // player placeholder
-    this.player = this.add.rectangle(100, 332, 40, 40, 0x0000ff);
+    this.player = this.add.rectangle(100, 300, 40, 40, 0x0000ff);
     this.physics.add.existing(this.player);
     this.player.body.setGravityY(1800);
 
-    // collider between player and ground
-    this.physics.add.collider(this.player, this.groundGroup);
+    // collider between player and the fixed ground line
+    this.physics.add.collider(this.player, this.groundLine);
+
+    // build starting ground visuals
+    this.buildGround();
 
     this.spawnObstacle();
     this.spawnEnemy();
@@ -79,21 +82,25 @@ class PlayScene extends Phaser.Scene {
       return;
     }
 
-    // scroll ground segments
-    for (let i = this.groundSegments.length - 1; i >= 0; i--) {
-      let seg = this.groundSegments[i];
-      seg.x -= this.gameSpeed * (1 / 60);
-      seg.body.x = seg.x - seg.width / 2;
-      seg.body.body.reset(seg.x, seg.y);
+    // scroll ground visuals and remove ones that go off screen
+    for (let i = this.groundVisuals.length - 1; i >= 0; i--) {
+      let tile = this.groundVisuals[i];
+      tile.x -= this.gameSpeed * (1 / 60);
 
-      // replace segment when it goes off screen
-      if (seg.x < -200) {
-        seg.body.destroy();
-        seg.destroy();
-        this.groundSegments.splice(i, 1);
-        this.addSegment(this.getRightEdge());
+      if (tile.x + tile.width / 2 < 0) {
+        tile.destroy();
+        this.groundVisuals.splice(i, 1);
       }
     }
+
+    // keep ground built well ahead of the screen
+    while (this.getRightEdge() < 1400) {
+      this.addGroundTile();
+    }
+
+    // pit detection - disable ground collision when player is over a gap
+    let overGap = this.isOverGap();
+    this.groundLine.body.checkCollision.none = overGap;
 
     // scroll obstacles
     for (let i = this.obstacles.length - 1; i >= 0; i--) {
@@ -141,6 +148,17 @@ class PlayScene extends Phaser.Scene {
     }
   }
 
+  // checks if the player x is currently over a visual gap
+  isOverGap() {
+    let px = this.player.x;
+    for (let tile of this.groundVisuals) {
+      let left = tile.x - tile.width / 2;
+      let right = tile.x + tile.width / 2;
+      if (px >= left && px <= right) return false;
+    }
+    return true;
+  }
+
   // triggers the spin attack state
   activateSpin() {
     this.isSpinning = true;
@@ -161,51 +179,47 @@ class PlayScene extends Phaser.Scene {
     });
   }
 
-  // builds the starting ground
+  // fills ground visuals from x=0 up to 1400
   buildGround() {
-    this.addSegment(0, 800);
+    let x = 0;
+    while (x < 1400) {
+      let w = 300;
+      let tile = this.add.rectangle(x + w / 2, 376, w, 48, 0x8B4513);
+      this.groundVisuals.push(tile);
+      x += w;
+    }
   }
 
-  // adds a ground segment at a given x position with a given width
-  addSegment(x, width) {
-    let w = width || (150 + Math.random() * 200);
-
-    // visual ground tile
-    let seg = this.add.rectangle(x + w / 2, 376, w, 48, 0x8B4513);
-
-    // invisible physics body for the tile
-    let body = this.add.rectangle(x + w / 2, 360, w, 16, 0x000000).setVisible(false);
-    this.physics.add.existing(body, true);
-    this.groundGroup.add(body);
-
-    seg.body = body;
-    this.groundSegments.push(seg);
+  // adds one ground tile at the right edge, with a random chance of a gap before it
+  addGroundTile() {
+    let right = this.getRightEdge();
+    let gap = Math.random() < 0.2 ? 80 : 0;
+    let w = 300;
+    let tile = this.add.rectangle(right + gap + w / 2, 376, w, 48, 0x8B4513);
+    this.groundVisuals.push(tile);
   }
 
-  // returns the x position where the next segment should start
+  // returns the x of the right edge of the furthest ground tile
   getRightEdge() {
-    let maxX = 800;
-    for (let seg of this.groundSegments) {
-      let right = seg.x + seg.width / 2;
+    let maxX = 0;
+    for (let tile of this.groundVisuals) {
+      let right = tile.x + tile.width / 2;
       if (right > maxX) maxX = right;
     }
-
-    // random chance to leave a gap between segments
-    let gap = Math.random() < 0.2 ? 60 + Math.random() * 40 : 0;
-    return maxX + gap;
+    return maxX;
   }
 
   // spawns an obstacle off screen to the right
   spawnObstacle() {
     let spacing = 500 + Math.random() * 300;
-    let obs = this.add.rectangle(900 + spacing, 330, 30, 48, 0xff0000);
+    let obs = this.add.rectangle(900 + spacing, 328, 30, 48, 0xff0000);
     this.obstacles.push(obs);
   }
 
   // spawns an enemy off screen to the right
   spawnEnemy() {
     let spacing = 600 + Math.random() * 400;
-    let enemy = this.add.rectangle(900 + spacing, 336, 36, 36, 0xffff00);
+    let enemy = this.add.rectangle(900 + spacing, 332, 36, 36, 0xffff00);
     this.enemies.push(enemy);
   }
 
