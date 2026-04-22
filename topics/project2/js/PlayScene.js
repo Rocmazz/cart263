@@ -4,6 +4,27 @@ class PlayScene extends Phaser.Scene {
     super({ key: 'PlayScene' });
   }
 
+  preload() {
+    // load all game assets
+    this.load.image('bg', 'assets/greenHillBG.png');
+    this.load.image('tile', 'assets/greenHillTiles.png');
+    this.load.image('motobug', 'assets/motobug.png');
+
+    // run animation strip - 8 frames with 1px gap between each
+    this.load.spritesheet('run', 'assets/run.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      spacing: 1
+    });
+
+    // spin animation strip - 16 frames with 1px gap between each
+    this.load.spritesheet('spin', 'assets/spin.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      spacing: 1
+    });
+  }
+
   create() {
     this.gameSpeed = 300;
     this.score = 0;
@@ -16,23 +37,41 @@ class PlayScene extends Phaser.Scene {
     this.enemies = [];
     this.groundVisuals = [];
 
-    // sky background
-    this.add.rectangle(400, 200, 800, 400, 0x5ac8f5);
+    // scrolling background
+    this.bg = this.add.tileSprite(400, 200, 800, 400, 'bg');
 
     // one fixed invisible ground line the player always lands on
     this.groundLine = this.add.rectangle(400, 352, 800, 4, 0x000000).setVisible(false);
     this.physics.add.existing(this.groundLine, true);
 
-    // player placeholder
-    this.player = this.add.rectangle(100, 300, 40, 40, 0x0000ff);
-    this.physics.add.existing(this.player);
+    // build starting ground visuals
+    this.buildGround();
+
+    // define animations before creating the sprite
+    this.anims.create({
+      key: 'run',
+      frames: this.anims.generateFrameNumbers('run', { start: 0, end: 7 }),
+      frameRate: 12,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'spin',
+      frames: this.anims.generateFrameNumbers('spin', { start: 0, end: 15 }),
+      frameRate: 16,
+      repeat: -1
+    });
+
+    // sonic sprite - use run sheet as base texture
+    this.player = this.physics.add.sprite(80, 300, 'run', 0);
     this.player.body.setGravityY(1800);
+    this.player.setScale(1.5);
+    // shrink hitbox to match sonic's actual visible size within the frame
+    this.player.body.setSize(30, 36);
+    this.player.play('run');
 
     // collider between player and the fixed ground line
     this.physics.add.collider(this.player, this.groundLine);
-
-    // build starting ground visuals
-    this.buildGround();
 
     this.spawnObstacle();
     this.spawnEnemy();
@@ -42,13 +81,6 @@ class PlayScene extends Phaser.Scene {
       fontSize: '20px',
       fontFamily: 'Arial',
       color: '#ffffff'
-    });
-
-    // spin indicator
-    this.spinText = this.add.text(16, 44, '', {
-      fontSize: '16px',
-      fontFamily: 'Arial',
-      color: '#ffff00'
     });
 
     // jump and spin keys
@@ -62,6 +94,9 @@ class PlayScene extends Phaser.Scene {
     // speed up over time
     this.gameSpeed += 0.03;
 
+    // scroll background slower than foreground for depth effect
+    this.bg.tilePositionX += this.gameSpeed * 0.3 * (1 / 60);
+
     // update score
     this.score += 1;
     this.scoreText.setText('Score: ' + Math.floor(this.score / 10));
@@ -74,6 +109,13 @@ class PlayScene extends Phaser.Scene {
     // spin attack on ground or in air
     if (this.spinKey.isDown && !this.isSpinning && !this.spinCooldown) {
       this.activateSpin();
+    }
+
+    // switch animation based on state
+    if (this.isSpinning) {
+      if (this.player.anims.currentAnim.key !== 'spin') this.player.play('spin');
+    } else {
+      if (this.player.anims.currentAnim.key !== 'run') this.player.play('run');
     }
 
     // player fell off the map
@@ -99,8 +141,7 @@ class PlayScene extends Phaser.Scene {
     }
 
     // pit detection - disable ground collision when player is over a gap
-    let overGap = this.isOverGap();
-    this.groundLine.body.checkCollision.none = overGap;
+    this.groundLine.body.checkCollision.none = this.isOverGap();
 
     // scroll obstacles
     for (let i = this.obstacles.length - 1; i >= 0; i--) {
@@ -163,14 +204,10 @@ class PlayScene extends Phaser.Scene {
   activateSpin() {
     this.isSpinning = true;
     this.spinCooldown = true;
-    this.player.setFillStyle(0x00ffff);
-    this.spinText.setText('SPIN!');
 
     // spin lasts 300ms
     this.time.delayedCall(300, () => {
       this.isSpinning = false;
-      this.player.setFillStyle(0x0000ff);
-      this.spinText.setText('');
 
       // short cooldown before spin can be used again
       this.time.delayedCall(100, () => {
@@ -183,19 +220,17 @@ class PlayScene extends Phaser.Scene {
   buildGround() {
     let x = 0;
     while (x < 1400) {
-      let w = 300;
-      let tile = this.add.rectangle(x + w / 2, 376, w, 48, 0x8B4513);
+      let tile = this.add.tileSprite(x + 150, 368, 300, 32, 'tile');
       this.groundVisuals.push(tile);
-      x += w;
+      x += 300;
     }
   }
 
-  // adds one ground tile at the right edge, with a random chance of a gap before it
+  // adds one ground tile at the right edge with a random chance of a gap before it
   addGroundTile() {
     let right = this.getRightEdge();
     let gap = Math.random() < 0.2 ? 80 : 0;
-    let w = 300;
-    let tile = this.add.rectangle(right + gap + w / 2, 376, w, 48, 0x8B4513);
+    let tile = this.add.tileSprite(right + gap + 150, 368, 300, 32, 'tile');
     this.groundVisuals.push(tile);
   }
 
@@ -216,10 +251,10 @@ class PlayScene extends Phaser.Scene {
     this.obstacles.push(obs);
   }
 
-  // spawns an enemy off screen to the right
+  // spawns a motobug enemy off screen to the right
   spawnEnemy() {
     let spacing = 600 + Math.random() * 400;
-    let enemy = this.add.rectangle(900 + spacing, 332, 36, 36, 0xffff00);
+    let enemy = this.add.image(900 + spacing, 338, 'motobug');
     this.enemies.push(enemy);
   }
 
