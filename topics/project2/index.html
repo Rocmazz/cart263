@@ -17,6 +17,7 @@
   <!-- load scenes -->
   <script src="js/TitleScene.js"></script>
   <script src="js/PlayScene.js"></script>
+  <script src="js/GameOverScene.js"></script>
 
   <script>
     // phaser game config
@@ -24,12 +25,12 @@
       type: Phaser.AUTO,
       width: 800,
       height: 400,
-      backgroundColor: '#5ac8f5',
+      backgroundColor: '#000000',
       physics: {
         default: 'arcade',
         arcade: { gravity: { y: 0 }, debug: false }
       },
-      scene: [TitleScene, PlayScene]
+      scene: [TitleScene, PlayScene, GameOverScene]
     };
 
     // start the game

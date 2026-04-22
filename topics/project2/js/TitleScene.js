@@ -4,32 +4,26 @@ class TitleScene extends Phaser.Scene {
     super({ key: 'TitleScene' });
   }
 
+  preload() {
+    // load the title screen image
+    this.load.image('titlescreen', 'assets/titlescreen.png');
+
+    // load the title screen song
+    this.load.audio('titleSong', 'assets/titlescreensong.mp3');
+  }
+
   create() {
-    // center of the canvas
-    const cx = this.scale.width / 2;
-    const cy = this.scale.height / 2;
+    // display the title screen image
+    this.add.image(400, 200, 'titlescreen');
 
-    // sky and ground rectangles as background
-    this.add.rectangle(cx, cy - 100, 800, 200, 0x5ac8f5);
-    this.add.rectangle(cx, cy + 100, 800, 200, 0x4aaa3a);
-
-    // game title
-    this.add.text(cx, cy - 60, 'SONIC RUNNER', {
-      fontSize: '48px',
-      fontFamily: 'Arial Black',
-      color: '#ffffff',
-    }).setOrigin(0.5);
-
-    // prompt to start
-    this.add.text(cx, cy + 60, 'Press ENTER to Start', {
-      fontSize: '22px',
-      fontFamily: 'Arial',
-      color: '#ffffff'
-    }).setOrigin(0.5);
+    // play title song on loop
+    this.music = this.sound.add('titleSong', { loop: true });
+    this.music.play();
 
     // enter key to start game
     const enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     enter.once('down', () => {
+      this.music.stop();
       this.scene.start('PlayScene');
     });
   }

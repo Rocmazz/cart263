@@ -23,6 +23,15 @@ class PlayScene extends Phaser.Scene {
       frameHeight: 48,
       spacing: 1
     });
+
+    // sound effects
+    this.load.audio('jump', 'assets/jump.wav');
+    this.load.audio('spin', 'assets/spin.wav');
+    this.load.audio('enemy_death', 'assets/enemy_death.wav');
+    this.load.audio('game_over', 'assets/game_over.wav');
+
+    // background music
+    this.load.audio('gameplaySong', 'assets/gameplaysong.mp3');
   }
 
   create() {
@@ -63,7 +72,7 @@ class PlayScene extends Phaser.Scene {
     });
 
     // sonic sprite - use run sheet as base texture
-    this.player = this.physics.add.sprite(80, 300, 'run', 0);
+    this.player = this.physics.add.sprite(100, 300, 'run', 0);
     this.player.body.setGravityY(1800);
     this.player.setScale(1.5);
     // shrink hitbox to match sonic's actual visible size within the frame
@@ -86,6 +95,16 @@ class PlayScene extends Phaser.Scene {
     // jump and spin keys
     this.jumpKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.spinKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+
+    // sound effects
+    this.jumpSound = this.sound.add('jump');
+    this.spinSound = this.sound.add('spin');
+    this.enemyDeathSound = this.sound.add('enemy_death');
+    this.gameOverSound = this.sound.add('game_over');
+
+    // play gameplay song on loop
+    this.music = this.sound.add('gameplaySong', { loop: true });
+    this.music.play();
   }
 
   update() {
@@ -104,11 +123,13 @@ class PlayScene extends Phaser.Scene {
     // jump when on the ground
     if (Phaser.Input.Keyboard.JustDown(this.jumpKey) && this.player.body.blocked.down) {
       this.player.body.setVelocityY(-900);
+      this.jumpSound.play();
     }
 
     // spin attack on ground or in air
     if (this.spinKey.isDown && !this.isSpinning && !this.spinCooldown) {
       this.activateSpin();
+      this.spinSound.play();
     }
 
     // switch animation based on state
@@ -181,6 +202,7 @@ class PlayScene extends Phaser.Scene {
           this.enemies.splice(i, 1);
           this.spawnEnemy();
           this.score += 50;
+          this.enemyDeathSound.play();
         } else {
           this.triggerGameOver();
           return;
@@ -265,15 +287,16 @@ class PlayScene extends Phaser.Scene {
     return Phaser.Geom.Intersects.RectangleToRectangle(ab, bb);
   }
 
-  // pauses the game and shows game over text
+  // pauses the game and switches to the game over screen
   triggerGameOver() {
     this.gameOver = true;
     this.physics.pause();
+    this.music.stop();
+    this.gameOverSound.play();
 
-    this.add.text(400, 180, 'GAME OVER', {
-      fontSize: '48px',
-      fontFamily: 'Arial Black',
-      color: '#ffffff'
-    }).setOrigin(0.5);
+    // short delay before switching so the player sees what happened
+    this.time.delayedCall(600, () => {
+      this.scene.start('GameOverScene', { score: Math.floor(this.score / 10) });
+    });
   }
 }
